@@ -14,24 +14,19 @@
 	</ul>
 </div>
 <?php  else: ?>
-<div class="blog-post">
-	<h2 class="blog-post-title">
-        <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a>
-	</h2>
-	<div class="blog-post-meta date_author">
-		<span><?php the_time('m月d日'); ?></span>&nbsp;&nbsp;<span>By</span>&nbsp;&nbsp;<span><?php the_author(''); ?></span>
+<div class="post-excerpt-post">
+	<div class="title">
+		<p><span class="glyphicon glyphicon-file"></span><h1><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h1></p>
 	</div>
-	<p><?php the_excerpt(); ?></p>
-	<p class="blog-post-meta">
-		<span>分类：<?php the_category(' '); ?></span>
-		<span>标签：<?php the_tags(' '); ?></span>
-		<span>评论：<?php comments_popup_link('0条', '1 条', '% 条', '', '评论已关闭'); ?></span>
-	</p>
+	<div class="information">
+		<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;<span><?php the_author(''); ?></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;<span><?php the_time('m月d日'); ?></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;<span><?php the_category(' '); ?></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-tag"></span> &nbsp;&nbsp;<span><?php the_tags(' '); ?></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;<span><?php comments_popup_link('0条', '1 条', '% 条', '', '评论已关闭'); ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+	</div>
+	<div class="clear"></div>
+	<div class="excerpt">
+	<p><?php the_excerpt(); ?></p>	
+	</div>
 </div>
 <?php endif; ?>	
-
 <?php $postnun++; endwhile; else: ?>
-
 	<h1 style="border:1px solid #ccc; border-radius: 3px; padding: 50px; font-size: 20px; color: #f00; text-align: center; background: #fff;">客官太深了~~~ 已经没有更多的文章可以显示了</h1>
-
 <?php endif; ?>

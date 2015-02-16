@@ -1,62 +1,18 @@
-<?php
-/**
-* @package jialove
-* @author rccoder
-* @version 1.0
-* @link http://www.rccoder.net
-*/
-/**
- * Filter the page title.
- *
- * Creates a nicely formatted and more specific title element text
- * for output in head of document, based on current view.
- *
- * @since jialove 1.0
- *
- * @param string $title Default title text for current view.
- * @param string $sep Optional separator.
- * @return string Filtered title.
- */
-function jialove_wp_title( $title, $sep ) {
-	global $paged, $page;
-	if ( is_feed() )
-		return $title;
-	// Add the site name.
-	$title .= get_bloginfo( 'name', 'display' );
-	// Add the site description for the home/front page.
-	$site_description = get_bloginfo( 'description', 'display' );
-	if ( $site_description && ( is_home() || is_front_page() ) )
-		$title = "$title $sep $site_description";
-	// Add a page number if necessary.
-	if ( ( $paged >= 2 || $page >= 2 ) && ! is_404() )
-		$title = "$title $sep " . sprintf( __( 'Page %s', 'twentytwelve' ), max( $paged, $page ) );
-	return $title;
-}
-add_filter( 'wp_title', 'jialove_wp_title', 10, 2 );
-/**
-* Some easy
-*
-* define the nav-menu
-* define the kind of the post
-* define the excerpt of the post
-*define the widget in the sidebar
-*
-* @since jialove1.0
-*/
-//define the nav-menu
+<?php 
+//注册导航菜单
 register_nav_menus(
 		array(
-			'primary' => __('主题菜单')
+			'primary' => __('主菜单')
 		)
 	);
-//define the kind of the post
-add_theme_support( 'post-formats', array('status','image','quote','video','audio') );
-//define the excerpt of the post
+//调节摘要字数
 function jialove_excerpt_length($length){
-  return 200;
+  return 400;
 }
 add_filter('excerpt_length', 'jialove_excerpt_length');
-//define the widget in the sidebar
+//注册文章类型
+add_theme_support( 'post-formats', array('status','image','quote','video','audio') );
+//注册边栏sidebar
 function jialove_widgets() {
 		register_sidebar(array(
 			'name' => 'sidebar1',
@@ -68,4 +24,28 @@ function jialove_widgets() {
 		));
 	}
 	add_action( 'widgets_init', 'jialove_widgets' );	
-?>
+function wp_pagenavi( $before = '', $after = '', $p = 2 ) {
+	if ( is_singular() ) return;
+	global $wp_query, $paged;
+	$max_page = $wp_query->max_num_pages;
+	if ( $max_page == 1 ) return;
+	if ( empty( $paged ) ) $paged = 1;
+	echo $before.'<div class="pagination">';
+	echo '<li><a href="#">第 ' . $paged . ' 页,共 ' . $max_page . ' 页</li>';
+	if ( $paged > 1 ) p_link( $paged - 1, '上一页', '«' );
+	if ( $paged > $p + 1 ) p_link( 1, '最前一页' );
+	if ( $paged > $p + 2 ) echo '... ';
+	for( $i = $paged - $p; $i <= $paged + $p; $i++ ) {
+	if ( $i > 0 && $i <= $max_page ) $i == $paged ? print "<li>{$i}</li>" : p_link( $i );
+	}
+	if ( $paged < $max_page - $p - 1 ) echo '... ';
+	if ( $paged < $max_page - $p ) p_link( $max_page, '最后一页' );
+	if ( $paged < $max_page ) p_link( $paged + 1,'下一页', '»' );
+	echo '</div>'.$after;
+	}
+	function p_link( $i, $title = '', $linktype = '' ) {
+	if ( $title == '' ) $title = "Page {$i}";
+	if ( $linktype == '' ) { $linktext = $i; } else { $linktext = $linktype; }
+	echo "<li><a href='", esc_html( get_pagenum_link( $i ) ), "' title='{$title}'>{$linktext}</a></li>";
+	}
+ ?>

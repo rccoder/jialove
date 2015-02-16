@@ -1,14 +1,17 @@
 <?php get_header(); ?>
-<div class="row">
-    <div class="col-sm-8 blog-main">
-    	<!-- 
-    	<div class="wrap">
-    		
-    	</div>
-    -->
-    <?php include_once 'post_list.php' ?>
-    </div>
-  
+<div class="container">
+		<div class="row">
+			<div class="col-md-8" id="middle">
+				<!--start post-excerpt-->
+				<div class="post-excerpt">
+				<?php include_once 'post_list.php' ?>
+				
+				<!--end post-excerpt-->
+				<!--start pagination-->
+				<?php wp_pagenavi(); ?>
+			</div>
+			</div>
+				<!--end pagination-->
+			<div class="col-md-1"></div>
 <?php get_sidebar(); ?>
-</div>
 <?php get_footer(); ?>
